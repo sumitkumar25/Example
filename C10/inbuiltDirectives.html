@@ -1,0 +1,23 @@
+<h3>Repeat row and partial view</h3>
+<table class="table-bordered">
+    <tr ng-repeat="items in todos">
+        <td>{{items.action}}</td>
+        <td>{{items.complete}}</td>
+    </tr>
+</table>
+<h3>Repeat cell</h3>
+<table class="table-bordered">
+    <tr ng-repeat="items in todos">
+        <td ng-repeat="prop in items">
+            {{prop}}
+        </td>
+    </tr>
+</table>
+<h3>Key Value Iteration</h3>
+<table class="table-bordered">
+    <tr ng-repeat="items in todos" ng-class="$odd?'odd':'even'">
+        <td ng-repeat="(key ,value) in items">
+            {{key}} = {{value}}
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appDirectives">
+<head>
+    <meta charset="UTF-8">
+    <title>Directives</title>
+    <link href="../vendor/css/bootstrap.css">
+    <script src="../vendor/js/angular.js"></script>
+    <script>
+        angular.module("appDirectives", [])
+                .controller("defaultCtrl", function ($scope) {
+                    $scope.data = {};
+                    $scope.todos = [
+                        {action: "todo 1", complete: false},
+                        {action: "todo 2", complete: false},
+                        {action: "todo 3", complete: false},
+                        {action: "todo 4", complete: false},
+                        {action: "todo 5", complete: false},
+                        {action: "todo 6", complete: false},
+                        {action: "todo 7", complete: false},
+                        {action: "todo 8", complete: false},
+                        {action: "todo 9", complete: false},
+                        {action: "todo 10", complete: false},
+                        {action: "todo 11", complete: false},
+                        {action: "todo 12", complete: false},
+                    ];
+                    $scope.view = function () {
+                        return $scope.viewType ? 'table.html' : 'list.html';
+                    };
+                    $scope.reportChange = function () {
+                        console.log("displaying" + $scope.view())
+                    };
+                    $scope.viewOption = ["none", "list", "table"];
+                });
+    </script>
+    <style>
+        .odd {
+            background-color: #1b6d85;
+            color: white;
+        }
+
+        .even {
+            background-color: #0f0f0f;
+            color: white;
+        }
+    </style>
+</head>
+<body class="container">
+<h1>Directives Lesson</h1>
+
+<div class="well table-bordered" ng-controller="defaultCtrl">
+    <h2>One way Binding</h2>
+
+    <div>
+        <code ng-non-bindable>{{}}</code>
+    </div>
+    <div>There are {{todos.length}} Todos</div>
+    <div>
+        <code>ng-bind</code>
+    </div>
+    <div>There are <span ng-bind="todos.length"></span> Todos 2</div>
+    <div>
+        <code>ng-bind-template</code>
+    </div>
+    <div ng-bind-template="FIRST :{{todos[0].action}} SECOND :{{todos[1].action}}"></div>
+    <h2>Two way Binding</h2>
+</div>
+<div class="well table-bordered" ng-controller="defaultCtrl">
+    <h2>Inbuilt Directives</h2>
+    <input type="checkbox" ng-model="viewType">
+    <section ng-include="view()" onload="reportChange()"></section>
+    <ng-include src="view()"></ng-include>
+</div>
+<div class="well table-bordered" ng-controller="defaultCtrl">
+    <h2>ng switch</h2>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div ng-repeat="op in viewOption">
+                <label>
+                    <input type="radio" name="viewRadio" ng-model="data.mode" ng-checked="$first" value="{{op}}"/>
+                    {{op}}
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div ng-switch on="data.mode">
+                <div ng-switch-when="table">
+                    <table>
+                        <tr ng-repeat="items in todos" ng-class="$odd?'odd':'even'">
+                            <td ng-repeat="prop in items">{{prop}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-switch-when="list">
+                    <ul>
+                        <li ng-repeat="items in todos" ng-class="$odd?'odd':'even'">
+                            {{items.action}}&nbsp;{{items.complete}}
+                        </li>
+                    </ul>
+                </div>
+                <div ng-switch-default>
+                    select an option
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
