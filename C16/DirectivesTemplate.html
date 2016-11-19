@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>Directives Template</title>
+    <script src="../vendor/js/angular.js"></script>
+    <link href="../vendor/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../vendor/css/bootstrap-theme.css" rel="stylesheet"/>
+    <script type="text/template" id="listTemplate">
+        <ul>
+            <li ng-repeat='item in data'>
+                {{item.price | currency}}
+            </li>
+        </ul>
+    </script>
+    <script>
+        angular.module("exampleApp", [])
+                .directive("unorderedList", function () {
+                    return {
+                        link: function (scope, element, attrs) {
+                            scope.data = scope[attrs["unorderedList"]];
+                        },
+                        restrict: "A",
+                        template: function () {
+                            return angular.element(document.querySelectorAll("#listTemplate")).html();
+                        }
+                    }
+                })
+                .directive("testDir", function () {
+                    return {
+                        template: "<div class='panel'>Name: <input ng-model=name></div>",
+                        scope: true
+                    }
+                }).controller("defaultCtrl", function ($scope) {
+            $scope.products = [
+                {name: "Apples", category: "Fruit", price: 1.20, expiry: 10},
+                {name: "Bananas", category: "Fruit", price: 2.42, expiry: 7},
+                {name: "Pears", category: "Fruit", price: 2.02, expiry: 6}
+            ];
+        }).controller("directiveScope", function ($scope) {
+
+        })
+    </script>
+</head>
+<body>
+<div class="panel panel-default" ng-controller="defaultCtrl">
+    <div class="panel-heading">
+        <h3>Products</h3>
+    </div>
+    <div class="panel-body">
+        <div unordered-list="products">
+            This is where the list will go
+        </div>
+    </div>
+</div>
+<div ng-controller="directiveScope">
+    <div class="panel" test-dir=""></div>
+    <div class="panel" test-dir=""></div>
+</div>
+<h2>new controller instance</h2>
+
+<div ng-controller="directiveScope">
+    <div class="panel" test-dir=""></div>
+    <div class="panel" test-dir=""></div>
+</div>
+</body>
+</html>
